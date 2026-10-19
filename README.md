@@ -17,7 +17,7 @@ notes, a recommendation, a reason, and the trade-offs.
 | `results/figures/` | Loss curve and base-vs-fine-tuned chart |
 | `results/ft_error_root_causes.csv` | Hand-labeled root cause for each fine-tuned error |
 | `report/report.pdf` | The report (source `report/report.tex`; build with `cd report && tectonic report.tex` after `make_report_assets.py`) |
-| `model/lora_adapter/` | Trained LoRA adapter (load on top of Qwen3-4B-Instruct-2507). In this repository it is stored as `model/lora_adapter.zip.part-aa` and `-ab` (130 MB is over GitHub's file limit); run `bash setup.sh` to rebuild it |
+| `model/lora_adapter/` | Trained LoRA adapter (load on top of Qwen3-4B-Instruct-2507). In this repository it is stored as `model/lora_adapter.zip.part-aa` and `-ab` (130 MB is over GitHub's file limit); run `bash setup.sh` to rebuild it. The full Canvas zip has it already unzipped; the smaller Canvas zip leaves it out (see `ADAPTER_NOTE.txt` there) |
 | `model/log_history.json` | Training / validation loss log |
 
 ## Files
