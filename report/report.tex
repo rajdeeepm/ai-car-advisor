@@ -14,7 +14,7 @@
 \usepackage{fancyvrb}
 \usepackage{float}
 \usepackage[most]{tcolorbox}
-\usepackage[hidelinks]{hyperref}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue!60!black]{hyperref}
 \setlist{itemsep=2pt, topsep=4pt}
 \setlength{\parskip}{5pt}
 \setlength{\parindent}{0pt}
@@ -31,6 +31,11 @@
 \makeatother
 
 \input{../results/latex/numbers.tex}
+
+% links to files in the public repository
+\newcommand{\repourl}{https://github.com/rajdeeepm/ai-car-advisor}
+\newcommand{\gh}[2]{\href{\repourl/blob/main/#1}{\code{#2}}}
+\newcommand{\ghdir}[2]{\href{\repourl/tree/main/#1}{\code{#2}}}
 
 % let floats share pages with text, and start float-only pages at the top
 \renewcommand{\topfraction}{0.9}
@@ -152,7 +157,7 @@ in the final section, \hyperref[sec:guidelines]{Study guidelines and participant
 
 \subsection{Dataset: my own task and dataset (bonus)}\label{sec:data}
 
-I designed the task and created all data myself with my generator (\code{gen\_dataset.py},
+I designed the task and created all data myself with my generator (\gh{gen_dataset.py}{gen\_dataset.py},
 fixed random seeds). No existing dataset was sampled. I considered a public Craigslist used-car
 listings dataset (Zenodo record 10457828, \url{https://zenodo.org/records/10457828}) but did not use
 its rows, because real listings come without a ground truth for ``which car should this buyer
@@ -367,7 +372,7 @@ qualifies.
 and a reference answer in the same JSON format (target). Reference answers are generated from the
 answer key: the true violations of each listing, the hidden red flags, the correct choice, and a
 numeric comparison of the qualifying alternatives. I trained with TRL's \code{SFTTrainer}
-(\code{train\_lora.py}): LoRA rank 16, alpha 32, dropout 0.05, on all attention and MLP projections
+(\gh{train_lora.py}{train\_lora.py}): LoRA rank 16, alpha 32, dropout 0.05, on all attention and MLP projections
 (33M trainable parameters, 0.81\% of the model); 2 epochs, learning rate $10^{-4}$ with cosine
 decay and 20 warm-up steps, effective batch size 8, bf16, maximum length 3,072 tokens, loss on the
 answer tokens only. The checkpoint with the lowest validation loss is kept; it was the final step
@@ -396,7 +401,7 @@ running on one study trial, as evidence that it works end to end.
 
 \medskip
 \VerbatimInput[fontsize=\tiny,frame=single,framesep=2mm]{demo_output.txt}
-\caption{The fine-tuned model on study trial CAR-130 (\code{demo.py}): screenshot (top, machine
+\caption{The fine-tuned model on study trial CAR-130 (\gh{demo.py}{demo.py}): screenshot (top, machine
 details blurred) and the same output as text (bottom). C hides frame damage in its note, A is
 rear-wheel drive (ruled out by the muddy cabin road), and D is \$400 over budget. The model flags
 C and recommends B, matching the answer key.}
@@ -407,16 +412,17 @@ C and recommends B, matching the answer key.}
 
 \paragraph{What someone would need to do:} The model is not hosted anywhere public, so anyone who
 wants to use it runs it on their own machine. The trained LoRA adapter is included in the
-submission (\code{model/lora\_adapter/}, 130\,MB), so retraining is optional:
+submission (\code{model/lora\_adapter/}, 130\,MB), so retraining is optional. The code, data and saved outputs are also in the repository
+\url{https://github.com/rajdeeepm/ai-car-advisor}:
 \begin{enumerate}
   \item Install Python 3.12 with PyTorch 2.13 (CUDA), Transformers 5.17, PEFT 0.21 and TRL 1.15
-  (the versions I used; the README lists the commands).
-  \item Download the base model from Hugging Face (\code{Qwen/Qwen3-4B-Instruct-2507}, about 8\,GB).
-  \item \textbf{To use my model:} run \code{infer.py} (a whole split) or \code{demo.py} (one
+  (the versions I used; \gh{requirements.txt}{requirements.txt} and the \gh{README.md}{README} list them).
+  \item Download the base model from Hugging Face (\href{https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507}{\code{Qwen/Qwen3-4B-Instruct-2507}}, about 8\,GB).
+  \item \textbf{To use my model:} run \gh{infer.py}{infer.py} (a whole split) or \gh{demo.py}{demo.py} (one
   trial), passing the adapter folder with the \code{--lora} option. For a live interface, the same loading code can sit behind
   a small web endpoint; a serving engine such as vLLM can make it faster.
-  \item \textbf{To retrain it:} regenerate the data with \code{gen\_dataset.py} and run
-  \code{train\_lora.py}, or run \code{run\_all.sh}, which trains and then produces every prediction
+  \item \textbf{To retrain it:} regenerate the data with \gh{gen_dataset.py}{gen\_dataset.py} and run
+  \gh{train_lora.py}{train\_lora.py}, or run \gh{run_all.sh}{run\_all.sh}, which trains and then produces every prediction
   used in this report.
 \end{enumerate}
 
@@ -432,7 +438,7 @@ Colab A100). About 10\,GB of disk covers the base model, adapter and data.
 
 \paragraph{How I benchmarked the model performance:} Both models, the base Qwen3-4B-Instruct and my fine-tuned version,
 answer all 200 study trials with the identical prompt and greedy decoding. Each output is parsed
-and scored automatically against a rule-based answer key (\code{evaluate.py}):
+and scored automatically against a rule-based answer key (\gh{evaluate.py}{evaluate.py}):
 \begin{enumerate}
   \item A listing is \textbf{feasible} only if it meets every requirement: the all-in budget (price
   plus required dealer fees), no branded title, any required transmission, drivetrain, seats, body
@@ -513,9 +519,9 @@ models score the same on clear trials, where every wrong car fails visibly.
 \subsection{Error analysis}\label{sec:errors}
 
 Following standard error-analysis practice \cite{errudite}, I first assign every wrong answer an
-outcome category automatically (\code{evaluate.py}): what went wrong. I then read each of the
+outcome category automatically (\gh{evaluate.py}{evaluate.py}): what went wrong. I then read each of the
 \FtErrors{} fine-tuned errors by hand to find its root cause: why it went wrong
-(\code{results/ft\_error\_root\_causes.csv}). Figure~\ref{fig:errors} shows both distributions.
+(\gh{results/ft_error_root_causes.csv}{results/ft\_error\_root\_causes.csv}). Figure~\ref{fig:errors} shows both distributions.
 
 \begin{figure}[htbp]
 \centering
@@ -745,28 +751,30 @@ several answers in each condition and human-only and human+AI can be compared on
 \section*{Appendix: submitted files and how to reproduce}
 \addcontentsline{toc}{section}{Appendix: submitted files}
 
-Everything is in the \code{car\_advisor/} folder; its \code{README.md} has full instructions.
+Everything is in the \code{car\_advisor/} folder of the submission and, except the trained adapter
+(130\,MB, over GitHub's file-size limit), in the repository \url{https://github.com/rajdeeepm/ai-car-advisor}.
+Its \gh{README.md}{README.md} has full instructions. File names below link to the repository.
 
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.38\linewidth}X}
 \toprule
 File & Contents \\
 \midrule
-\code{submission/study\_dataset.csv} & \textbf{Study dataset, 200 trials}: buyer profile and listings
+\gh{submission/study_dataset.csv}{submission/study\_dataset.csv} & \textbf{Study dataset, 200 trials}: buyer profile and listings
 A--D (input); model choice, red flags, reason, trade-offs and raw output (model output);
 per-listing issues, qualifying options, acceptable and best answers, correctness and error
 category (evaluation); base-model columns for comparison \\
-\code{submission/participant\_trials.csv} & Participant view for Assignment 3 (no answer key) \\
-\code{data/train.jsonl}, \code{data/val.jsonl} & Training (1,620) and validation (180) data \\
-\code{data/study.jsonl}, \code{data/study\_v1.jsonl} & Final study set and the iteration-1 version \\
-\code{gen\_dataset.py}, \code{natural\_text.py}, \code{make\_study\_v2.py} & Dataset generation \\
-\code{prompts.py}, \code{train\_lora.py}, \code{infer.py}, \code{demo.py}, \code{run\_all.sh} &
+\gh{submission/participant_trials.csv}{submission/participant\_trials.csv} & Participant view for Assignment 3 (no answer key) \\
+\gh{data/train.jsonl}{data/train.jsonl}, \gh{data/val.jsonl}{data/val.jsonl} & Training (1,620) and validation (180) data \\
+\gh{data/study.jsonl}{data/study.jsonl}, \gh{data/study_v1.jsonl}{data/study\_v1.jsonl} & Final study set and the iteration-1 version \\
+\gh{gen_dataset.py}{gen\_dataset.py}, \gh{natural_text.py}{natural\_text.py}, \gh{make_study_v2.py}{make\_study\_v2.py} & Dataset generation \\
+\gh{prompts.py}{prompts.py}, \gh{train_lora.py}{train\_lora.py}, \gh{infer.py}{infer.py}, \gh{demo.py}{demo.py}, \gh{run_all.sh}{run\_all.sh} &
 Model training and inference \\
-\code{evaluate.py}, \code{make\_report\_assets.py}, \code{export\_csv.py} & Metrics, error analysis,
+\gh{evaluate.py}{evaluate.py}, \gh{make_report_assets.py}{make\_report\_assets.py}, \gh{export_csv.py}{export\_csv.py} & Metrics, error analysis,
 report tables and figures \\
-\code{results/ft\_error\_root\_causes.csv} & Hand-labeled root cause of each fine-tuned error \\
-\code{preds/}, \code{results/} & Saved raw model outputs and scores for both iterations \\
-\code{model/lora\_adapter/}, \code{model/log\_history.json} & Trained LoRA adapter and training log \\
-\code{report/report.tex} & Source of this report \\
+\gh{results/ft_error_root_causes.csv}{results/ft\_error\_root\_causes.csv} & Hand-labeled root cause of each fine-tuned error \\
+\ghdir{preds}{preds/}, \ghdir{results}{results/} & Saved raw model outputs and scores for both iterations \\
+\code{model/lora\_adapter/}, \gh{model/log_history.json}{model/log\_history.json} & Trained LoRA adapter (submission only) and training log \\
+\gh{report/report.tex}{report/report.tex} & Source of this report \\
 \bottomrule
 \end{tabularx}
 
