@@ -157,7 +157,8 @@ in the final section, \hyperref[sec:guidelines]{Study guidelines and participant
 
 \subsection{Dataset: my own task and dataset (bonus)}\label{sec:data}
 
-I designed the task and created all data myself with my generator (\gh{gen_dataset.py}{gen\_dataset.py},
+File names in this report link to the GitHub repository; the same files are in the
+\code{car\_advisor/} folder submitted on Canvas. I designed the task and created all data myself with my generator (\gh{gen_dataset.py}{gen\_dataset.py},
 fixed random seeds). No existing dataset was sampled. I considered a public Craigslist used-car
 listings dataset (Zenodo record 10457828, \url{https://zenodo.org/records/10457828}) but did not use
 its rows, because real listings come without a ground truth for ``which car should this buyer
@@ -412,12 +413,12 @@ C and recommends B, matching the answer key.}
 
 \paragraph{What someone would need to do:} The model is not hosted anywhere public, so anyone who
 wants to use it runs it on their own machine. The code, data, saved outputs and trained LoRA
-adapter are in the repository \url{https://github.com/rajdeeepm/ai-car-advisor}, so retraining is
-optional. The adapter (130\,MB) is over GitHub's 100\,MB file limit, so it is stored as two zip
+adapter are in the \code{car\_advisor/} folder submitted on Canvas and in the repository
+\url{https://github.com/rajdeeepm/ai-car-advisor}, so retraining is optional. The adapter (130\,MB) is over GitHub's 100\,MB file limit, so it is stored as two zip
 parts; \gh{setup.sh}{setup.sh} joins them, checks them against a checksum and unzips the adapter
 into \code{model/lora\_adapter/}:
 \begin{enumerate}
-  \item Run \code{bash setup.sh} to rebuild the adapter (in the course submission it is already unzipped).
+  \item Run \code{bash setup.sh} to rebuild the adapter (in the Canvas submission it is already unzipped).
   \item Install Python 3.12 with PyTorch 2.13 (CUDA), Transformers 5.17, PEFT 0.21 and TRL 1.15
   (the versions I used; \gh{requirements.txt}{requirements.txt} and the \gh{README.md}{README} list them).
   \item Download the base model from Hugging Face (\href{https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507}{\code{Qwen/Qwen3-4B-Instruct-2507}}, about 8\,GB).
@@ -754,10 +755,10 @@ several answers in each condition and human-only and human+AI can be compared on
 \section*{Appendix: submitted files and how to reproduce}
 \addcontentsline{toc}{section}{Appendix: submitted files}
 
-Everything is in the \code{car\_advisor/} folder of the submission and in the repository
+Everything is in the \code{car\_advisor/} folder submitted on Canvas and in the repository
 \url{https://github.com/rajdeeepm/ai-car-advisor} (where the adapter is stored as two zip parts that
 \gh{setup.sh}{setup.sh} rebuilds).
-Its \gh{README.md}{README.md} has full instructions. File names below link to the repository.
+Its \gh{README.md}{README.md} has full instructions. File names below link to the repository; the same files are in the Canvas submission.
 
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.38\linewidth}X}
 \toprule
