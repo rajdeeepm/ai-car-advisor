@@ -17,7 +17,7 @@ notes, a recommendation, a reason, and the trade-offs.
 | `results/figures/` | Loss curve and base-vs-fine-tuned chart |
 | `results/ft_error_root_causes.csv` | Hand-labeled root cause for each fine-tuned error |
 | `report/report.pdf` | The report (source `report/report.tex`; build with `cd report && tectonic report.tex` after `make_report_assets.py`) |
-| `model/lora_adapter/` | Trained LoRA adapter (load on top of Qwen3-4B-Instruct-2507); 130 MB, so it is in the course submission rather than this repository |
+| `model/lora_adapter/` | Trained LoRA adapter (load on top of Qwen3-4B-Instruct-2507). In this repository it is stored as `model/lora_adapter.zip.part-aa` and `-ab` (130 MB is over GitHub's file limit); run `bash setup.sh` to rebuild it |
 | `model/log_history.json` | Training / validation loss log |
 
 ## Files
@@ -37,9 +37,21 @@ notes, a recommendation, a reason, and the trade-offs.
 | `make_report_assets.py` | Builds `results/report_tables.md` and figures from saved predictions | no |
 | `export_csv.py` | Builds the submission CSVs | no |
 | `requirements.txt` | Python packages and the versions used | – |
+| `setup.sh` | Rebuilds the LoRA adapter from its split parts and checks it; optionally installs packages and downloads the base model | no |
 
 `data/`: `study.jsonl` (final, v2), `study_v1.jsonl` (iteration 1), `train.jsonl` (1,620), `val.jsonl` (180).
 `preds/`: saved model outputs for v2; `preds/v1/` for iteration 1.
+
+## Running the trained model (GPU)
+
+```bash
+bash setup.sh --deps --base-model qwen3-4b   # rebuild the adapter (checksum verified), install packages, download the base model
+python demo.py --model qwen3-4b --lora model/lora_adapter --trial CAR-130                                   # one trial
+python infer.py --model qwen3-4b --lora model/lora_adapter --split data/study.jsonl --out preds/ft_study.jsonl  # all 200
+```
+
+Install the PyTorch build that matches your CUDA version before `--deps` if the default does not.
+A GPU with about 16-24 GB of memory is enough (for example, Google Colab).
 
 ## Reproducing the evaluation (no GPU, ~5 seconds)
 

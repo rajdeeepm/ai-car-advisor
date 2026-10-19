@@ -411,10 +411,13 @@ C and recommends B, matching the answer key.}
 \subsection{Replicating and hosting the model}
 
 \paragraph{What someone would need to do:} The model is not hosted anywhere public, so anyone who
-wants to use it runs it on their own machine. The trained LoRA adapter is included in the
-submission (\code{model/lora\_adapter/}, 130\,MB), so retraining is optional. The code, data and saved outputs are also in the repository
-\url{https://github.com/rajdeeepm/ai-car-advisor}:
+wants to use it runs it on their own machine. The code, data, saved outputs and trained LoRA
+adapter are in the repository \url{https://github.com/rajdeeepm/ai-car-advisor}, so retraining is
+optional. The adapter (130\,MB) is over GitHub's 100\,MB file limit, so it is stored as two zip
+parts; \gh{setup.sh}{setup.sh} joins them, checks them against a checksum and unzips the adapter
+into \code{model/lora\_adapter/}:
 \begin{enumerate}
+  \item Run \code{bash setup.sh} to rebuild the adapter (in the course submission it is already unzipped).
   \item Install Python 3.12 with PyTorch 2.13 (CUDA), Transformers 5.17, PEFT 0.21 and TRL 1.15
   (the versions I used; \gh{requirements.txt}{requirements.txt} and the \gh{README.md}{README} list them).
   \item Download the base model from Hugging Face (\href{https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507}{\code{Qwen/Qwen3-4B-Instruct-2507}}, about 8\,GB).
@@ -751,8 +754,9 @@ several answers in each condition and human-only and human+AI can be compared on
 \section*{Appendix: submitted files and how to reproduce}
 \addcontentsline{toc}{section}{Appendix: submitted files}
 
-Everything is in the \code{car\_advisor/} folder of the submission and, except the trained adapter
-(130\,MB, over GitHub's file-size limit), in the repository \url{https://github.com/rajdeeepm/ai-car-advisor}.
+Everything is in the \code{car\_advisor/} folder of the submission and in the repository
+\url{https://github.com/rajdeeepm/ai-car-advisor} (where the adapter is stored as two zip parts that
+\gh{setup.sh}{setup.sh} rebuilds).
 Its \gh{README.md}{README.md} has full instructions. File names below link to the repository.
 
 \begin{tabularx}{\linewidth}{>{\raggedright\arraybackslash}p{0.38\linewidth}X}
@@ -773,7 +777,7 @@ Model training and inference \\
 report tables and figures \\
 \gh{results/ft_error_root_causes.csv}{results/ft\_error\_root\_causes.csv} & Hand-labeled root cause of each fine-tuned error \\
 \ghdir{preds}{preds/}, \ghdir{results}{results/} & Saved raw model outputs and scores for both iterations \\
-\code{model/lora\_adapter/}, \gh{model/log_history.json}{model/log\_history.json} & Trained LoRA adapter (submission only) and training log \\
+\ghdir{model}{model/lora\_adapter/}, \gh{model/log_history.json}{model/log\_history.json}, \gh{setup.sh}{setup.sh} & Trained LoRA adapter (split zip in the repository; \code{setup.sh} rebuilds it) and training log \\
 \gh{report/report.tex}{report/report.tex} & Source of this report \\
 \bottomrule
 \end{tabularx}

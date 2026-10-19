@@ -1,4 +1,4 @@
-# the LoRA adapter (130 MB) is over GitHub's file-size limit; it is in the course submission
+# the unzipped adapter; the repository stores it as model/lora_adapter.zip.part-* (rebuilt by setup.sh)
 model/lora_adapter/
 runs/
 logs/
