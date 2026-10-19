@@ -1,0 +1,47 @@
+TRIAL CAR-130  (fine-tuned Qwen3-4B-Instruct)
+BUYER: I live in northern Michigan where winters are long and snowy. I can spend at most
+$20,500 total, including any required dealer fees. Our cabin road turns to mud every
+spring and I've had to get towed out with a two-wheel-drive car before. I need the car to
+be honestly represented: no flood or frame damage, no title or mileage issues, no sketchy
+payment setups, and nothing that needs a major repair right away. If several cars work,
+I'd lean toward a more recent model year first and low miles on the odometer second. Which
+listing would you recommend? Choose A, B, C, D, or None if no listing meets my needs.
+
+LISTINGS:
+Option A: 2022 Toyota Tacoma
+  Price: $19,900 | Mileage: 60,500 mi | Pickup, 5 seats | RWD | Automatic | Gas, 20 mpg combined
+  Title: Clean | Seller: Dealer (Marquette, MI)
+  Seller notes: (none)
+Option B: 2020 Mazda CX-9
+  Price: $13,900 | Mileage: 80,000 mi | SUV, 7 seats | AWD | Automatic | Gas, 24 mpg combined
+  Title: Clean | Seller: Dealer (Lansing, MI)
+  Seller notes: "Check engine light came on once - turned out to be a loose gas cap. Had it
+                 scanned at AutoZone, no codes since."
+Option C: 2023 Subaru Outback
+  Price: $18,400 | Mileage: 43,000 mi | Wagon, 5 seats | AWD | Automatic | Gas, 27 mpg combined
+  Title: Clean | Seller: Dealer (Lansing, MI)
+  Seller notes: "Body is straight and paint looks great. Was in a moderate accident last year
+                 and the shop had to pull the frame back into spec, plus a new quarter panel."
+Option D: 2022 Toyota Sienna
+  Price: $20,900 | Mileage: 60,000 mi | Minivan, 8 seats | AWD | Automatic | Hybrid, 35 mpg combined
+  Title: Clean | Seller: Dealer (Houston, TX)
+  Seller notes: "Seller is a mechanic. Brakes, rotors, battery all done this year. Happy to
+                 show you the paperwork."
+
+MODEL OUTPUT
+{
+  "option_checks": {
+    "A": "Fails: RWD only; the buyer needs AWD/4WD for their conditions.",
+    "B": "Meets all requirements; seller note mentions only minor, routine items.",
+    "C": "Fails: Seller note reveals frame/structural damage.",
+    "D": "Fails: All-in price $20,900 is over the $20,500 budget."
+  },
+  "red_flags": [
+    { "option": "C", "issue": "Seller note reveals frame/structural damage." }
+  ],
+  "recommendation": "B",
+  "reason": "B (2020 Mazda CX-9) is the only listing that meets every requirement.",
+  "tradeoffs": "The other listings may look better on paper, but each has a deal-breaker."
+}
+Recommendation: B | flagged: ['C']
+Answer key: acceptable = ['B'], best = B

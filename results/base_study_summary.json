@@ -1,0 +1,43 @@
+{
+ "n": 200,
+ "acceptable_rate": 0.725,
+ "exact_best_rate": 0.665,
+ "constraint_compliance_rate": 0.81,
+ "none_precision": 0.618,
+ "none_recall": 0.7,
+ "red_flag_recall": 0.869,
+ "red_flag_false_alarm_rate": 0.162,
+ "invalid_outputs": 1,
+ "acceptable_by_trial_type": {
+  "clear": 0.9,
+  "trap": 0.729,
+  "tradeoff": 0.657,
+  "none": 0.7
+ },
+ "error_distribution": {
+  "dominated_tradeoff": {
+   "count": 17,
+   "pct_of_errors": 30.9
+  },
+  "missed_seller_note_red_flag": {
+   "count": 14,
+   "pct_of_errors": 25.5
+  },
+  "unnecessary_none": {
+   "count": 13,
+   "pct_of_errors": 23.6
+  },
+  "missed_implicit_need": {
+   "count": 5,
+   "pct_of_errors": 9.1
+  },
+  "violated_explicit_requirement": {
+   "count": 5,
+   "pct_of_errors": 9.1
+  },
+  "invalid_output": {
+   "count": 1,
+   "pct_of_errors": 1.8
+  }
+ }
+}

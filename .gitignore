@@ -1,0 +1,12 @@
+# the LoRA adapter (130 MB) is over GitHub's file-size limit; it is in the course submission
+model/lora_adapter/
+runs/
+logs/
+archive_pre_yearfix/
+__pycache__/
+*.pyc
+.DS_Store
+report/*.aux
+report/*.log
+report/*.out
+report/changes_to_report.txt

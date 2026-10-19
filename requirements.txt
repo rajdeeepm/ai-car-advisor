@@ -1,0 +1,13 @@
+# Scoring and data generation (evaluate.py, gen_dataset.py, make_study_v2.py, export_csv.py)
+# need only the Python 3.12 standard library. matplotlib is used for the report figures.
+matplotlib>=3.8
+
+# Model training and inference (train_lora.py, infer.py, demo.py) need a CUDA GPU.
+# Install torch first with the build matching your CUDA version, for example:
+#   pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cu130
+torch==2.13.0
+transformers==5.17.0
+peft==0.21.2
+trl==1.15.0
+datasets
+accelerate
