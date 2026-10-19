@@ -195,6 +195,13 @@ Validation & 180 & 720 & Choosing the training checkpoint (lowest validation los
   uses the same mix of trial types as the study set (35\% trap, 35\% trade-off, 15\% clear, 15\%
   none). The validation loss flattens over the second epoch (Figure~\ref{fig:loss}), which suggests
   more data of the same kind would add little. I did not run a formal data-size ablation.
+  \item \textbf{Why 90/10:} The validation set has one job, choosing the checkpoint with the
+  lowest validation loss, and 180 trials are enough for that loss to be stable. Keeping it small
+  leaves as much data as possible for training.
+  \item \textbf{Why three sets instead of two:} If checkpoints were chosen on the study set, the
+  reported study score would be biased upward and the study set would no longer be untouched for
+  the final evaluation and the Assignment~3 user study. A separate validation set keeps those
+  decisions away from the study set.
 \end{itemize}
 
 \paragraph{What a trial contains:} Every trial in every split has the same structure
@@ -305,7 +312,7 @@ title (16), unreliable odometer (17), scam-like payment request (18), major repa
 and required fees that break the budget (15). There are also 32 implied-need violations.
 
 \paragraph{Separation of datasets:} The training and validation sets come from a different seed. They contain
-do not contain any of the study trials, buyer texts or car sets (checked programmatically), and not a single one of the
+none of the study trials, buyer texts or car sets (checked programmatically), and none of the
 study-only hand-written phrasings described below.
 
 \paragraph{Dataset iterations:}
